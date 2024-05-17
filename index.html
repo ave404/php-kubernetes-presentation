@@ -33,21 +33,60 @@
 			<div class="slides">
 				<section>
 					<h2>PHP в Kubernetes локально</h2>
-					<p>Сергей Буланов <a href="https://t.me/ave404">@ave404</a></p>
 				</section>
 
 				<section>
-					<h2>Мотивация</h2>
+					<h4>Сергей Буланов</h4>
+
+					<div class="small-text" style="display: flex; justify-content: space-evenly; text-align: left;">
+						<div>
+							<p>
+								Пишу Backend на PHP более 5 лет. <br>
+								В ближайшее время планирую больше погружаться в Golang.
+							</p>
+
+							<p>
+								Люблю природу и катать на велике. <br>
+								А еще это первый доклад на открытую публику =)
+							</p>
+						</div>
+
+						<img src="assets/tg.jpg" alt="https://t.me/ave404" width="200">
+					</div>
+				</section>
+
+				<section>
+					<h3>Мотивация</h3>
+
+					<p class="fragment">Кто переезжает в кубер - отладка проекта</p>
+					<p class="fragment">Кто думает переезжать - проверить совместимость</p>
+					<p class="fragment">Кого интересует кубер и новые инструменты</p>
+				</section>
+
+				<section>
+					<p>Итерационно посмотрим как реализовать джентльменский набор проекта:</p>
+
+					<ul>
+						<li class="fragment">Поднимем PHP</li>
+						<li class="fragment">Подключим базу данных</li>
+						<li class="fragment">Настроим миграции и очереди</li>
+						<li class="fragment">Поработаем с кроном</li>
+						<li class="fragment">Настроем доступ в кластер</li>
+					</ul>
+				</section>
+
+				<section>
+					<p>Хардкор и много кода <span class="fragment" style="color: red">на yaml</span></p>
 				</section>
 
 				<section>
 					<h3>Что понадобится</h3>
 
 					<ul>
+						<li>docker</li>
+						<li>kind | minikube | k3s | k0s</li>
 						<li>kubectl</li>
 						<li>helm</li>
-						<li>minikube | k3s | k0s | kind</li>
-						<li>docker</li>
 					</ul>
 				</section>
 
@@ -160,11 +199,15 @@
 				</section>
 
 				<section>
-					<h3>Небольшой экскурс</h3>
+					<h3>Абстракции</h3>
 
 					<div class="r-stack r-stretch">
-						<img class="fragment fade-out" src="assets/pod.png" alt="pod" width="500" data-fragment-index="0">
-						<img class="fragment" src="assets/deployment&cronjob.png" alt="deployment and cronjob" data-fragment-index="0">
+						<img src="assets/abstractions/pod.png" alt="pod" data-fragment-index="0" class="fragment fade-in-then-out">
+						<img src="assets/abstractions/replicaset.png" alt="replicaset" data-fragment-index="1" class="fragment fade-in-then-out">
+						<img src="assets/abstractions/deployment.png" alt="deployment" data-fragment-index="2" class="fragment fade-in-then-out">
+						<img src="assets/abstractions/pod.png" alt="pod" data-fragment-index="3" class="fragment fade-in-then-out">
+						<img src="assets/abstractions/job.png" alt="job" data-fragment-index="4" class="fragment fade-in-then-out">
+						<img src="assets/abstractions/cronjob.png" alt="cronjob" data-fragment-index="5" class="fragment">
 					</div>
 				</section>
 
@@ -278,6 +321,15 @@
 				</section>
 
 				<section>
+					<div class="r-stack">
+						<img src="assets/step1/kind.png" alt="kind" data-fragment-index="0" class="fragment fade-in-then-out">
+						<img src="assets/step1/kubernetes.png" alt="kubernetes" data-fragment-index="1" class="fragment fade-in-then-out">
+						<img src="assets/step1/pod.png" alt="pod" data-fragment-index="2" class="fragment fade-in-then-out">
+						<img src="assets/step1/command.png" alt="command" data-fragment-index="3" class="fragment">
+					</div>
+				</section>
+
+				<section>
 					<h3>Шаг 2. Nginx + PHP</h3>
 				</section>
 
@@ -376,6 +428,16 @@
 					<p><code>Проверяем работу</code></p>
 
 					<img src="assets/first_run.png" class="r-stretch" alt="first run">
+				</section>
+
+				<section>
+					<div class="r-stack stretch">
+						<img src="assets/step2/php.png" alt="php" data-fragment-index="0" class="fragment fade-in-then-out">
+						<img src="assets/step2/nginx.png" alt="nginx" data-fragment-index="1" class="fragment fade-in-then-out">
+						<img src="assets/step2/configmap.png" alt="configmap" data-fragment-index="2" class="fragment fade-in-then-out">
+						<img src="assets/step2/fail.png" alt="fail" data-fragment-index="3" class="fragment fade-in-then-out">
+						<img src="assets/step2/success.png" alt="success" data-fragment-index="4" class="fragment">
+					</div>
 				</section>
 
 				<section>
@@ -588,6 +650,14 @@
 						  0001_01_01_000001_create_cache_table .... 21.20ms DONE
 						  0001_01_01_000002_create_jobs_table ..... 36.21ms DONE
 					</code></pre>
+				</section>
+
+				<section>
+					<div class="r-stack stretch">
+						<img src="assets/step3/php.png" alt="php" data-fragment-index="0" class="fragment fade-in-then-out">
+						<img src="assets/step3/postgresql.png" alt="postgresql" data-fragment-index="1" class="fragment fade-in-then-out">
+						<img src="assets/step3/service.png" alt="service" data-fragment-index="2" class="fragment">
+					</div>
 				</section>
 
 				<section>
@@ -807,10 +877,10 @@
 				</section>
 
 				<section>
-					<h3>Прямой доступ</h3>
+					<h3>Корректный доступ</h3>
 
-					<div class="r-stack r-stretch">
-						<img src="assets/ingress.png" alt="ingress" data-fragment-index="0">
+					<div class="r-stack stretch">
+						<img src="assets/step6/ingress.png" alt="ingress" data-fragment-index="0" class="">
 					</div>
 				</section>
 
@@ -961,7 +1031,20 @@
 				</section>
 
 				<section>
-					<h5>Что в итоге</h5>
+					<h3>Что в итоге</h3>
+
+					<div class="r-stack stretch">
+						<img src="assets/step6/replicaset.png" alt="replicaset" data-fragment-index="0" class="fragment fade-in-then-out">
+						<img src="assets/step6/job.png" alt="job" data-fragment-index="1" class="fragment fade-in-then-out">
+						<img src="assets/step6/cronjob.png" alt="cronjob" data-fragment-index="2" class="fragment fade-in-then-out">
+						<img src="assets/step6/deployment.png" alt="deployment" data-fragment-index="3" class="fragment fade-in-then-out">
+						<img src="assets/step6/user.png" alt="user" data-fragment-index="4" class="fragment fade-in-then-out">
+						<img src="assets/step6/pods.png" alt="pods" data-fragment-index="5" class="fragment">
+					</div>
+				</section>
+
+				<section>
+					<h3>Что в итоге</h3>
 
 					<pre style="width: 35%;"><code class="hljs plain small-text" data-trim>
                         ├── .helm
@@ -990,7 +1073,7 @@
 				</section>
 
 				<section>
-					<h5>Что дальше</h5>
+					<h3>Что дальше</h3>
 
 					<ul>
 						<li>шаблонизация</li>
@@ -1000,7 +1083,7 @@
 				</section>
 
 				<section>
-					<h5>Что может понадобится</h5>
+					<h3>Что может понадобится</h3>
 
 					<ul>
 						<li><code>kubectl logs</code></li>
@@ -1018,14 +1101,14 @@
 						<figure class="small-text">
 							<img src="assets/source.svg" alt="source code" data-fragment-index="0" width="300">
 							<figcaption>
-								<a href="https://github.com/ave404/php-kubernetes-example">github.com/ave404/php-kubernetes-example</a>
+								Проект<br><br><a href="https://github.com/ave404/php-kubernetes-example">github.com/ave404/php-kubernetes-example</a>
 							</figcaption>
 						</figure>
 
 						<figure class="small-text">
 							<img src="assets/presentation.svg" alt="presentation" data-fragment-index="0" width="300">
 							<figcaption>
-								<a href="https://github.com/ave404/php-kubernetes-presentation">github.com/ave404/php-kubernetes-presentation</a>
+								Презентация<br><br><a href="https://github.com/ave404/php-kubernetes-presentation">github.com/ave404/php-kubernetes-presentation</a>
 							</figcaption>
 						</figure>
 					</div>
